@@ -171,10 +171,10 @@
     "no-shadow-restricted-names": 2,
     "no-shadow": 2,
     "no-undef-init": 2,
-    "no-undef": 2,
-    "no-unused-vars": 2,
+    "no-undef": 0,
+    "no-unused-vars": 0,
+    "@typescript-eslint/no-unused-vars": 0,
     // Node.js
-    "callback-return": 2,
     "no-mixed-requires": 2,
     "no-path-concat": 2,
     "no-sync": 2,
@@ -221,7 +221,7 @@
     ],
     "indent": [
       2,
-      4,
+      2,
       {
         "SwitchCase": 1
       }
