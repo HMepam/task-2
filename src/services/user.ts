@@ -5,27 +5,30 @@ import { IUser } from '../schemas/user/type';
 const User = mongoose.model('User');
 
 class UserService {
-  login(login: IUser['login'], password: IUser['password']) {
+  async login(login: IUser['login'], password: IUser['password']) {
     /*
      * In real need to check login
      * and compare hashed password and set token
      * in the cookies or in the header
      * for now just for example
      * */
-    return User.findOne({ login, password });
+    const user = await User.findOne({ login, password });
+    return user;
   }
 
-  getAutoSuggestUsers(login: IUser['login'], limit: number) {
+  async getAutoSuggestUsers(login: IUser['login'], limit: number) {
     const regex = new RegExp(login.substring(1, 3), 'i');
-    return User.find({ login: { $regex: regex } }).limit(limit);
+    const user = await User.find({ login: { $regex: regex } }).limit(limit);
+    return user;
   }
 
-  getUser(id: string) {
+  async getUser(id: string) {
     /*
      * In real need to check token
      * for now just for example
      * */
-    return User.findById(id);
+    const user = await User.findById(id);
+    return user;
   }
 
   async createUser(data: Request['body']) {
