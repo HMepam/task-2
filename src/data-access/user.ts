@@ -1,9 +1,8 @@
-import { Op } from 'sequelize';
 import { User } from '../models';
 import { UserInput, UserOutput } from '../models/user/types';
 import { WhereOptions } from 'sequelize/types/model';
 
-class UserDAl {
+class UserDAL {
   async getById(id: number): Promise<Promise<UserOutput> | null> {
     const user = await User.findByPk(id);
 
@@ -51,4 +50,4 @@ class UserDAl {
   }
 }
 
-export default new UserDAl();
+export default new UserDAL();
