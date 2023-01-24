@@ -1,38 +1,37 @@
-import mongoose from 'mongoose';
+import { Op } from 'sequelize';
 import { Request } from 'express';
-import { IUser } from '../schemas/user/type';
-
-const User = mongoose.model('User');
+import userDAL from '../data-access/user';
+import { UserInput } from '../models/user/types';
 
 class UserService {
-  async login(login: IUser['login'], password: IUser['password']) {
+  async login(login: string, password: string) {
     /*
      * In real need to check login
      * and compare hashed password and set token
      * in the cookies or in the header
      * for now just for example
      * */
-    const user = await User.findOne({ login, password });
+    const user = await userDAL.getByOptions({ login, password });
     return user;
   }
 
-  async getAutoSuggestUsers(login: IUser['login'], limit: number) {
-    const regex = new RegExp(login.substring(1, 3), 'i');
-    const user = await User.find({ login: { $regex: regex } }).limit(limit);
+  async getAutoSuggestUsers(login: string, limit: number) {
+    const options = {
+      login: {
+        [Op.like]: `%${login.substring(1, 3)}%`
+      }
+    };
+    const user = await userDAL.getLimitedByOptions(limit, options);
     return user;
   }
 
   async getUser(id: string) {
-    /*
-     * In real need to check token
-     * for now just for example
-     * */
-    const user = await User.findById(id);
+    const user = await userDAL.getById(+id);
     return user;
   }
 
   async createUser(data: Request['body']) {
-    const existUser = await User.findOne({ login: data.login });
+    const existUser = await userDAL.getByOptions({ login: data.login });
 
     if (existUser) {
       throw new Error('User already exist');
@@ -42,22 +41,17 @@ class UserService {
      * for now just for example I am saving password
      * */
 
-    const newUser = new User(data);
-    await new newUser.save();
+    const newUser = await userDAL.create(data);
     return newUser;
   }
 
   async updateUser(data: Request['body']) {
-    const user = await User.findById(data.id);
-    user.login = data.login;
-    user.password = data.password;
-    user.age = data.age;
-    await user.save();
+    const user = await userDAL.update(data.id, data as Partial<UserInput>);
     return user;
   }
 
   async softDeleteUser(id: string) {
-    await User.updateOne({ _id: id }, { isDeleted: true });
+    await userDAL.update(+id, { isDeleted: true });
   }
 }
 
