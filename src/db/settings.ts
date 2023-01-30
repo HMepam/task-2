@@ -4,7 +4,6 @@ export default {
   [EnvTypes.development]: {
     host: process.env.DB_HOST,
     dialect: 'postgres',
-    operatorsAliases: false,
     pool: {
       max: 10,
       min: 0,
@@ -15,7 +14,6 @@ export default {
   [EnvTypes.test]: {
     host: process.env.DB_HOST,
     dialect: 'postgres',
-    operatorsAliases: false,
     pool: {
       max: 10,
       min: 0,
@@ -26,7 +24,6 @@ export default {
   [EnvTypes.production]: {
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
-    operatorsAliases: false,
     pool: {
       max: 10,
       min: 0,
