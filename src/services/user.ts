@@ -11,8 +11,7 @@ class UserService {
      * in the cookies or in the header
      * for now just for example
      * */
-    const user = await userDAL.getByOptions({ login, password });
-    return user;
+    return await userDAL.getByOptions({ login, password });
   }
 
   async getAutoSuggestUsers(login: string, limit: number) {
@@ -21,13 +20,11 @@ class UserService {
         [Op.like]: `%${login.substring(1, 3)}%`
       }
     };
-    const user = await userDAL.getLimitedByOptions(limit, options);
-    return user;
+    return await userDAL.getLimitedByOptions(limit, options);
   }
 
   async getUser(id: string) {
-    const user = await userDAL.getById(+id);
-    return user;
+    return await userDAL.getById(+id);
   }
 
   async createUser(data: Request['body']) {
@@ -41,13 +38,11 @@ class UserService {
      * for now just for example I am saving password
      * */
 
-    const newUser = await userDAL.create(data);
-    return newUser;
+    return await userDAL.create(data);
   }
 
   async updateUser(data: Request['body']) {
-    const user = await userDAL.update(data.id, data as Partial<UserInput>);
-    return user;
+    return await userDAL.update(data.id, data as Partial<UserInput>);
   }
 
   async softDeleteUser(id: string) {
