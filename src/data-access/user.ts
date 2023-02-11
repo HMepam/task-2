@@ -1,27 +1,23 @@
-import { User } from '../models';
-import { UserInput, UserOutput } from '../models/user/types';
 import { WhereOptions } from 'sequelize/types/model';
+import { UserInput, UserOutput } from '../models/user/types';
+import { User } from '../models';
 
 class UserDAL {
   async getById(id: number): Promise<Promise<UserOutput> | null> {
-    const user = await User.findByPk(id);
-
-    return user;
+    return await User.findByPk(id);
   }
 
   async getByOptions(
     options: WhereOptions<any>
   ): Promise<Promise<UserOutput> | null> {
-    const user = await User.findOne({ where: options });
-    return user;
+    return await User.findOne({ where: options });
   }
 
   async getLimitedByOptions(
     limit: number,
     options: WhereOptions<any>
   ): Promise<Promise<UserOutput[]> | null> {
-    const users = await User.findAll({ limit, where: options });
-    return users;
+    return await User.findAll({ limit, where: options });
   }
 
   async update(id: number, payload: Partial<UserInput>): Promise<UserOutput> {
@@ -32,13 +28,11 @@ class UserDAL {
       throw new Error('not found');
     }
 
-    const updatedUser = await user.update(payload);
-    return updatedUser;
+    return await user.update(payload);
   }
 
   async create(payload: UserInput): Promise<UserOutput> {
-    const user = await User.create(payload);
-    return user;
+    return await User.create(payload);
   }
 
   async deleteById(id: number): Promise<boolean> {
