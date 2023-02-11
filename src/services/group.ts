@@ -24,10 +24,11 @@ class GroupService {
   }
 
   async addUsersToGroup(data: Request['body']) {
-    return await userGroupDAL.create({
-      groupId: data.groupId,
-      userId: data.userId
-    });
+    const userIds = data.userIds;
+    const groupId = data.groupId;
+    return await userGroupDAL.createMany(
+      userIds.map((userId: string) => ({ userId, groupId }))
+    );
   }
 
   async deleteGroup(id: string) {
